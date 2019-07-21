@@ -2,6 +2,17 @@
 
 This package works as the python wrapper to directly call some MKL routines while keep the same interface with numpy.
 
+## Install
+
+`pip install numkl`
+
+You should make sure Intel MKL library and Intel compilers are installed and configured for relevant enviroment variables.
+Intel parallel studio XE is recommended. 
+
+No gurantee on GNU compilers. 
+
+Only linux is supported.
+
 ## Example
 
 ```python

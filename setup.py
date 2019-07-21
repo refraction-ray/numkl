@@ -4,12 +4,16 @@ import os
 # from distutils.extension import Extension
 from setuptools import setup, Extension, find_packages
 
-##TODO: move to setuptools?
 ## replace disutils and also watch out! https://stackoverflow.com/questions/29048623/does-setuptools-build-ext-behaves-differently-from-distutils-one
 from Cython.Distutils import build_ext
+## cython loop import https://stackoverflow.com/questions/37471313/setup-requires-with-cython
 from numkl import __version__, __author__
 
-mklroot = os.environ["MKLROOT"]
+try:
+    mklroot = os.environ["MKLROOT"]
+except KeyError:
+    raise Exception("envarionment variable MKLROOT is not set")
+
 os.environ["CC"] = "icc"
 os.environ["LDSHARED"] = "icc -shared"
 ## try use intel compiler as introduced in https://software.intel.com/en-us/articles/thread-parallelism-in-cython
@@ -55,3 +59,6 @@ setup(
         "Operating System :: OS Independent",
     ),
 )
+
+## wheel upload is not supported, see https://stackoverflow.com/questions/50690526/how-to-publish-binary-python-wheels-for-linux-on-a-local-machine
+## also, it doesn't make sense to share the wheel at the beginning, due to the external mkl so library
