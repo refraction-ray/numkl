@@ -47,6 +47,15 @@ cdef int _syevr(lapack_t[:,::1] a, lapack_t[::1]e, lapack_t[:,::1] z, lapack_int
 
 @cython.boundscheck(False)
 def syevd(a, int matrix_layout=1, jobz="V"):
+    """
+    Lower level python wrapper on ?syevd and ?heevd, the routine is auto chosen in runtime, depending on the dtype of matrix a.
+
+    :param a: np.array, matrix
+    :param matrix_layout: integer, default 1, odd number for row major order (F) while even number for col major order (F)
+    :param jobz: char, default "V", V for eigenpairs while N for only eigenvalues
+    :return: np.array for eigenvalues when jobz="N"
+            or tuple of np.array for eigenpairs when job="V"
+    """
     jobz = ord(jobz) #REF: https://stackoverflow.com/questions/28002214/cython-typeerror-an-integer-is-required
     if a.dtype in [np.float32, np.float64]:
         e = np.zeros(a.shape[0], dtype=a.dtype)
