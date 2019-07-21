@@ -7,3 +7,6 @@ __pycache__
 *.ipynb
 *.c
 *.so
+MANIFEST
+dist/
+numkl.egg-info/
