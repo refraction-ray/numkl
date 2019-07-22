@@ -6,7 +6,9 @@ from setuptools import setup, Extension, find_packages
 
 ## replace disutils and also watch out! https://stackoverflow.com/questions/29048623/does-setuptools-build-ext-behaves-differently-from-distutils-one
 from Cython.Distutils import build_ext
+
 ## cython loop import https://stackoverflow.com/questions/37471313/setup-requires-with-cython
+## https://github.com/pypa/setuptools/issues/1317, Maybe only PEP518 is the way out, but still a long way to go.
 from numkl import __version__, __author__
 
 try:

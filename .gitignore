@@ -1,4 +1,5 @@
 build/
+.pytest_cache/
 ._README.md
 __pycache__
 .DS_Store

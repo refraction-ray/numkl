@@ -46,12 +46,13 @@ cdef int _syevr(lapack_t[:,::1] a, lapack_t[::1]e, lapack_t[:,::1] z, lapack_int
         raise TypeError(errmsg["wrongtype"])
 
 @cython.boundscheck(False)
-def syevd(a, int matrix_layout=1, jobz="V"):
+def syevd(a, int matrix_layout=0, jobz="V"):  ## WARNING: using layout default to 0, col major until the issue is resolved
     """
     Lower level python wrapper on ?syevd and ?heevd, the routine is auto chosen in runtime, depending on the dtype of matrix a.
 
     :param a: np.array, matrix
-    :param matrix_layout: integer, default 1, odd number for row major order (F) while even number for col major order (F)
+    :param matrix_layout: integer, default 0, odd number for row major order (C) while even number for col major order (F).
+                        warn: currently, row major order may have unexpected results on eigenvectors.
     :param jobz: char, default "V", V for eigenpairs while N for only eigenvalues
     :return: np.array for eigenvalues when jobz="N"
             or tuple of np.array for eigenpairs when job="V"
@@ -60,13 +61,19 @@ def syevd(a, int matrix_layout=1, jobz="V"):
     if a.dtype in [np.float32, np.float64]:
         e = np.zeros(a.shape[0], dtype=a.dtype)
     elif a.dtype == np.complex64:
+        np.conj(a,a) ## hopefully a inplace transformation, it is needed since we are noe relying on col major order.
         e = np.zeros(a.shape[0], dtype=np.float32)
     elif a.dtype == np.complex128:
+        np.conj(a,a)
         e = np.zeros(a.shape[0], dtype=np.float64)
     if matrix_layout%2 == 1:
-        matrix_layout = LAPACK_ROW_MAJOR
+        matrix_layout = LAPACK_ROW_MAJOR ## WARNING: there seems to be some bugs in mkl lapacke interface with row major layout, the returned eigenvectors is somewhat weird
+        ## actually the error is due to only U part of the eigenvector matrix is returned! the lower part is kept as it is.
+        ## issue tracker: https://software.intel.com/en-us/forums/intel-math-kernel-library/topic/814791
     else:
         matrix_layout = LAPACK_COL_MAJOR
+    ## MKL matrix layout doc: https://software.intel.com/sites/products/documentation/doclib/mkl_sa/11/mkl_lapack_examples/cinterface.htm#matrixlayout
+    ## lda is the dimension of major
     uplo = ord("U")
     # print(a.dtype)
     if a.dtype == np.float64:
@@ -82,7 +89,10 @@ def syevd(a, int matrix_layout=1, jobz="V"):
 
     if info == 0:
         if (jobz == ord("V")):
-            return e, np.array(a)
+            if matrix_layout%2 == 1:
+                return e, np.array(a)
+            else: # col major
+                return e, np.array(a).T
         else:
             return e
     else:
