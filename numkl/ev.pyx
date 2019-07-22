@@ -100,6 +100,23 @@ def syevd(a, int matrix_layout=0, jobz="V"):  ## WARNING: using layout default t
 
 @cython.boundscheck(False)
 def syevr(a, int matrix_layout=1, jobz="V", range="A", vl=0, vu=0, il=0, iu=0, abstol=0):
+    """
+    Lower level python wrapper on ?syevr, the routine is auto chosen in runtime, depending on the dtype of matrix a.
+    Note syevr in general has low accuracy than syevd. Although stevr is claimed to be the last eigensolver by lapack.
+
+    :param a: np.array, input matrix
+    :param matrix_layout: integer, default 1, odd number for row major order (C) while even number for col major order (F).
+    :param jobz: char, default "V", V for eigenpairs while N for only eigenvalues
+    :param range: char, default "A". 'A': all eigenvalues will be found.
+                        'V': all eigenvalues in the half-open interval (VL,VU] will be found.
+                        'I': the IL-th through IU-th eigenvalues will be found.
+    :param vl: float, see range
+    :param vu: float see range
+    :param il: int, see range
+    :param iu: int, see range
+    :param abstol: double, tolerance
+    :return:
+    """
     n = a.shape[0]
     e = np.zeros(n, dtype=a.dtype)
     z = np.zeros((n,n), dtype=a.dtype) if jobz == "V" else np.zeros((1,1), dtype=a.dtype)
@@ -127,7 +144,11 @@ def syevr(a, int matrix_layout=1, jobz="V", range="A", vl=0, vu=0, il=0, iu=0, a
         if jobz == ord("N"):
             return e, m
         else:
-            return e, m, z, np.asarray(isuppz) ##TODO: more fine grain on what to be returned and how to process the out from syevr
+            if matrix_layout%2 == 1:
+                return e, m, z, np.asarray(isuppz)
+            else: # col major
+                return e, m, z.T.conj(), np.asarray(isuppz)
+        ##TODO: more fine grain on what to be returned and how to process the out from syevr
         ##TODO: still no idea what isuppz is
     else:
         _info_error(info)
