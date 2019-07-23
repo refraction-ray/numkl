@@ -1,0 +1,22 @@
+package:
+  name: numkl
+  version: "0.0.2"
+source:
+  path: ./
+build:
+  script: python setup.py install --single-version-externally-managed --record=record.txt
+  script_env:
+    - MKLROOT
+requirements:
+  build: 
+    - cython >=0.29
+    - numpy >=1.16
+  run:
+    - numpy >=1.16
+    - python >=3.6
+test:
+ imports:
+   - numkl
+about:
+  home: https://github.com/refraction-ray/numkl
+  license: MIT
