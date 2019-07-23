@@ -11,7 +11,7 @@ def eighx(a):  # TODO: support broadcast?
     :param a: np.array, matrix, broadcast is not supported now
     :return: e,v: tuple of np.array, one for eigenvalues and one for eigenvectors
     """
-    return syevd(a, matrix_layout=0, jobz="V")
+    return syevd(a, jobz="V")
 
 
 def eigvalshx(a):
@@ -24,4 +24,4 @@ def eigvalshx(a):
     :param a: np.array, matrix, broadcast is not supported now
     :return: np.array, eigenvalues in order
     """
-    return syevd(a, matrix_layout=0, jobz="N")
+    return syevd(a, jobz="N")

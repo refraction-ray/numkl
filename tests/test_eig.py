@@ -43,19 +43,21 @@ def test_eigh():
     compare_eig(bl, eig.eighx)
 
 
-def test_syevd():
+@pytest.mark.parametrize("matrix_layout", [0, 1])
+def test_syevd(matrix_layout):
     bl = get_al()
     for b in bl:
         en = np.linalg.eigvalsh(b)
-        ex = ev.syevd(b, matrix_layout=0, jobz="N")
+        ex = ev.syevd(b, matrix_layout=matrix_layout, jobz="N")
         assert np.allclose(en, ex)
     bl = get_al()
-    syevd0 = partial(ev.syevd, matrix_layout=0, jobz="V")
+    syevd0 = partial(ev.syevd, matrix_layout=matrix_layout, jobz="V")
     compare_eig(bl, syevd0)
 
 
+"""
 @pytest.mark.issue
-@pytest.mark.xfail  # Intel MKL LAPACKE interface may has some unexpected return for row_major_order!!
+@pytest.mark.xfail  # Intel MKL LAPACKE interface may has some unexpected return for row_major_order!! Fixed in psxe 2019.4
 def test_syevd_issue():
     bl = get_al()
     for b in bl:
@@ -65,7 +67,7 @@ def test_syevd_issue():
     bl = get_al()
     syevd1 = partial(ev.syevd, matrix_layout=1, jobz="V")
     compare_eig(bl, syevd1)
-
+"""
 
 # a, int matrix_layout=1, jobz="V", range="A", vl=0, vu=0, il=0, iu=0, abstol=0
 @pytest.mark.parametrize("matrix_layout", [0, 1])

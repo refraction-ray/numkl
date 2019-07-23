@@ -70,6 +70,7 @@ def syevd(a, int matrix_layout=0, jobz="V"):  ## WARNING: using layout default t
         matrix_layout = LAPACK_ROW_MAJOR ## WARNING: there seems to be some bugs in mkl lapacke interface with row major layout, the returned eigenvectors is somewhat weird
         ## actually the error is due to only U part of the eigenvector matrix is returned! the lower part is kept as it is.
         ## issue tracker: https://software.intel.com/en-us/forums/intel-math-kernel-library/topic/814791
+        ## parallel studio 2019 Update 4 fixing this issue in Lapacke
     else:
         matrix_layout = LAPACK_COL_MAJOR
     ## MKL matrix layout doc: https://software.intel.com/sites/products/documentation/doclib/mkl_sa/11/mkl_lapack_examples/cinterface.htm#matrixlayout
