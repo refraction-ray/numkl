@@ -9,16 +9,44 @@ from Cython.Distutils import build_ext
 
 ## cython loop import https://stackoverflow.com/questions/37471313/setup-requires-with-cython
 ## https://github.com/pypa/setuptools/issues/1317, Maybe only PEP518 is the way out, but still a long way to go.
+
+from numpy.distutils.system_info import get_info
 from numkl import __version__, __author__
 
 try:
     mklroot = os.environ["MKLROOT"]
 except KeyError:
-    raise Exception("envarionment variable MKLROOT is not set")
+    pass
 
 os.environ["CC"] = "icc"
 os.environ["LDSHARED"] = "icc -shared"
 ## try use intel compiler as introduced in https://software.intel.com/en-us/articles/thread-parallelism-in-cython
+
+mkl_info = get_info("mkl")
+libs = [
+    "mkl_intel_ilp64",  ## mkl_rt and runtime MKL_INTERFACE_LAYER policy doesn't work well for ilp64,
+    ## maybe directly linking to ilp interface is not a bad idea
+    "mkl_intel_thread",
+    "mkl_core",
+    "iomp5",
+    "pthread",
+    "m",
+]
+
+lib_dirs = mkl_info.get("library_dirs")
+if lib_dirs is None:
+    if not mklroot:
+        raise Exception("environment variable MKLROOT is not set")
+    else:
+        print("Using MKLROOT defined library path")
+        lib_dirs = [mklroot + "/lib/intel64"]
+include_dirs = mkl_info.get("include_dirs")
+if include_dirs is None:
+    if not mklroot:
+        raise Exception("environment variable MKLROOT is not set")
+    else:
+        print("Using MKLROOT defined include path")
+        include_dirs = [mklroot + "/include"]
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -27,17 +55,9 @@ ev = Extension(
     "numkl.ev",
     ["numkl/ev.pyx"],
     define_macros=[("MKL_ILP64",)],
-    include_dirs=[mklroot + "/include"],
-    libraries=[
-        "mkl_intel_ilp64",
-        "mkl_intel_thread",
-        "mkl_core",
-        "iomp5",
-        "pthread",
-        "m",
-        "dl",
-    ],
-    library_dirs=[mklroot + "/lib/intel64"],
+    include_dirs=include_dirs,
+    libraries=libs,
+    library_dirs=lib_dirs,
     extra_compile_args=["-O3", "-fopenmp", "-xhost"],
     # see https://software.intel.com/en-us/articles/performance-tools-for-software-developers-intel-compiler-options-for-sse-generation-and-processor-specific-optimizations for cpu specific optimization flag
     extra_link_args=["-O3", "-fopenmp", "-xhost"],  # -qopt-zmm-usage=high

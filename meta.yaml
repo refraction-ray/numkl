@@ -11,12 +11,17 @@ build:
   script_env:
     - MKLROOT
 requirements:
-  build: 
+  build:
+    - python >=3.6
+    - setuptools
+    - intelpython
+    - mkl-devel
     - cython >=0.29
     - numpy >=1.16
   run:
     - numpy >=1.16
     - python >=3.6
+    - mkl
 test:
  imports:
    - numkl

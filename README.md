@@ -8,7 +8,7 @@ This package works as the python wrapper to directly call some MKL routines whil
 
 ## Install
 
-Use `pip install numkl`,
+Use `pip install numkl`
 
 Or `conda install -c refraction-ray numkl`
 
