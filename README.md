@@ -1,20 +1,22 @@
 # NUMKL
 
+[![version](https://img.shields.io/pypi/v/numkl.svg)](https://pypi.org/project/numkl/)
+[![conda](https://anaconda.org/refraction-ray/numkl/badges/version.svg)](https://anaconda.org/refraction-ray/numkl)
+
+
 This package works as the python wrapper to directly call some MKL routines while keep the same interface with numpy.
 
 ## Install
 
-`pip install numkl`
+Use `pip install numkl`,
 
-You should make sure Intel MKL library and Intel compilers are installed and configured for relevant enviroment variables.
+Or `conda install -c refraction-ray numkl`
 
-Intel parallel studio XE is recommended. 
+You should make sure Intel MKL library and Intel compilers are installed and configured for relevant enviroment variables. Especially, environment variable `MKLROOT` is necessary for pip installation. And proper `LD_LIBRARY_PATH` is necessary in runtime.
 
-Currently, you also need cython preinstalled in your python enviroment.
+Currently, you also need cython preinstalled in your python enviroment for pip installation. No gurantee on GNU compilers.  Intel parallel studio XE is thus recommended. 
 
-No gurantee on GNU compilers. 
-
-Only linux is supported.
+Note this package is in its very early age, no guarantee on successful installation and usage. And this package only supports linux/icc/mkl stack. No guarantee on GNU compilers, openBLAS or MacOS.
 
 ## Example
 
