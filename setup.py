@@ -1,4 +1,5 @@
 import os
+import platform
 
 # from distutils.core import setup
 # from distutils.extension import Extension
@@ -48,6 +49,12 @@ if include_dirs is None:
         print("Using MKLROOT defined include path")
         include_dirs = [mklroot + "/include"]
 
+osinfo = platform.system()
+if osinfo == "Darwin":  # MacOS, clang
+    flags = ["-O3", "-fopenmp", "-march=native"]
+elif osinfo == "Linux":
+    flags = ["-O3", "-fopenmp", "-xhost"]
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
@@ -58,9 +65,9 @@ ev = Extension(
     include_dirs=include_dirs,
     libraries=libs,
     library_dirs=lib_dirs,
-    extra_compile_args=["-O3", "-fopenmp", "-xhost"],
+    extra_compile_args=flags,
     # see https://software.intel.com/en-us/articles/performance-tools-for-software-developers-intel-compiler-options-for-sse-generation-and-processor-specific-optimizations for cpu specific optimization flag
-    extra_link_args=["-O3", "-fopenmp", "-xhost"],  # -qopt-zmm-usage=high
+    extra_link_args=flags,  # -qopt-zmm-usage=high
 )
 
 setup(
