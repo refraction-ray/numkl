@@ -18,8 +18,8 @@ try:
 except KeyError:
     pass
 
-os.environ["CC"] = "icc"
-os.environ["LDSHARED"] = "icc -shared"
+# os.environ["CC"] = "icc"
+# os.environ["LDSHARED"] = "icc -shared"
 ## try use intel compiler as introduced in https://software.intel.com/en-us/articles/thread-parallelism-in-cython
 
 mkl_info = get_info("mkl")
