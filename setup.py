@@ -51,7 +51,8 @@ if include_dirs is None:
 
 osinfo = platform.system()
 if osinfo == "Darwin":  # MacOS, clang
-    flags = ["-O3", "-fopenmp", "-march=native"]
+    flags = ["-O3", "-fopenmp=libiomp5", "-march=native"]
+    ## openmp + mkl on mac: https://zhuanlan.zhihu.com/p/48484576
 elif osinfo == "Linux":
     flags = ["-O3", "-fopenmp", "-xhost"]
 
