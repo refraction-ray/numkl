@@ -51,9 +51,12 @@ if include_dirs is None:
 
 osinfo = platform.system()
 if osinfo == "Darwin":  # MacOS, clang
-    flags = ["-O3", "-openmp", "-march=native"]
+    # flags = ["-O3", "-openmp", "-march=native"]
+    flags = []
     ## openmp + mkl on mac: https://zhuanlan.zhihu.com/p/48484576
     ## possible relevant posts: https://github.com/ContinuumIO/anaconda-issues/issues/8803
+    ## not workable for now: "clang-4.0: error: no such file or directory: 'build/temp.macosx-10.9-x86_64-3.6/numkl/ev.o'"
+    ## somehow in CI osx env, the .o file is not generated
 elif osinfo == "Linux":
     flags = ["-O3", "-fopenmp", "-xhost"]
 
