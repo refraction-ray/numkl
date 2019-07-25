@@ -1,8 +1,9 @@
-from numkl import eig
-from numkl import ev
-import numpy as np
 from functools import partial
+
+import numpy as np
 import pytest
+
+from numkl import eig, ev
 
 a2 = np.array([[0, 1.0], [1, 0]])
 a3 = np.array([[0, 1, 0], [1, 0.7, -2.8], [0, -2.8, 0]])

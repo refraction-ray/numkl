@@ -1,5 +1,6 @@
 {% set version = "0.0.3" %}
-
+## this file is used for local conda build on linux machine if necessary
+## for a more complete and standalone meta.yml, please checkout the acompany repo numkl-feedstock
 package:
   name: numkl
   version: {{ version }}

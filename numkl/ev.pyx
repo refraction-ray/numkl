@@ -2,6 +2,7 @@
 
 import cython
 import numpy as np
+
 from numkl.helper import errmsg, _info_error
 from numkl.lapackev cimport *
 

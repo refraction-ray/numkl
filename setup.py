@@ -1,18 +1,18 @@
 import os
 import platform
 
-# from distutils.core import setup
-# from distutils.extension import Extension
-from setuptools import setup, Extension, find_packages
-
 ## replace disutils and also watch out! https://stackoverflow.com/questions/29048623/does-setuptools-build-ext-behaves-differently-from-distutils-one
 from Cython.Distutils import build_ext
+from numpy.distutils.system_info import get_info
+# from distutils.core import setup
+# from distutils.extension import Extension
+from setuptools import Extension, find_packages, setup
+
+from numkl import __author__, __version__
 
 ## cython loop import https://stackoverflow.com/questions/37471313/setup-requires-with-cython
 ## https://github.com/pypa/setuptools/issues/1317, Maybe only PEP518 is the way out, but still a long way to go.
 
-from numpy.distutils.system_info import get_info
-from numkl import __version__, __author__
 
 try:
     mklroot = os.environ["MKLROOT"]
@@ -56,7 +56,10 @@ if osinfo == "Darwin":  # MacOS, clang
     ## openmp + mkl on mac: https://zhuanlan.zhihu.com/p/48484576
     ## possible relevant posts: https://github.com/ContinuumIO/anaconda-issues/issues/8803
     ## not workable for now: "clang-4.0: error: no such file or directory: 'build/temp.macosx-10.9-x86_64-3.6/numkl/ev.o'"
-    ## somehow in CI osx env, the .o file is not generated
+    ## somehow in CI osx env, the .o file is not generated.
+    ## or if using no flag or -fopenmp flag, the error is delayed to runtime when importing numkl.ev
+    ## ImportError: dlopen(/Users/travis/miniconda3/conda-bld/numkl_1564029926743/_test_env_placehold/lib/python3.6/site-packages/numkl/ev.cpython-36m-darwin.so, 2):
+    ## Symbol not found: _mkl_blas_caxpy
 elif osinfo == "Linux":
     flags = ["-O3", "-fopenmp", "-xhost"]
 

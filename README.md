@@ -14,9 +14,9 @@ Or `conda install -c refraction-ray numkl`
 
 You should make sure Intel MKL library and Intel compilers are installed and configured for relevant enviroment variables. Especially, environment variable `MKLROOT` is necessary for pip installation. And proper `LD_LIBRARY_PATH` is necessary in runtime.
 
-Currently, you also need cython preinstalled in your python enviroment for pip installation. No gurantee on GNU compilers.  Intel parallel studio XE is thus recommended. 
+Currently, you also need cython preinstalled in your python enviroment for pip installation. 
 
-Note this package is in its very early age, no guarantee on successful installation and usage. And this package only supports linux/icc/mkl stack. No guarantee on GNU compilers, openBLAS or MacOS.
+Note this package is in its very early age, no guarantee on successful installation and usage. And this package only supports linux. 
 
 ## Example
 
