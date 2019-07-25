@@ -51,8 +51,9 @@ if include_dirs is None:
 
 osinfo = platform.system()
 if osinfo == "Darwin":  # MacOS, clang
-    flags = ["-O3", "-fopenmp=libiomp5", "-march=native"]
+    flags = ["-O3", "-openmp", "-march=native"]
     ## openmp + mkl on mac: https://zhuanlan.zhihu.com/p/48484576
+    ## possible relevant posts: https://github.com/ContinuumIO/anaconda-issues/issues/8803
 elif osinfo == "Linux":
     flags = ["-O3", "-fopenmp", "-xhost"]
 
