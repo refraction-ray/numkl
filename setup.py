@@ -4,6 +4,7 @@ import platform
 ## replace disutils and also watch out! https://stackoverflow.com/questions/29048623/does-setuptools-build-ext-behaves-differently-from-distutils-one
 from Cython.Distutils import build_ext
 from numpy.distutils.system_info import get_info
+
 # from distutils.core import setup
 # from distutils.extension import Extension
 from setuptools import Extension, find_packages, setup

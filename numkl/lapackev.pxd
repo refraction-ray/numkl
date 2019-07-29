@@ -31,6 +31,12 @@ cdef extern from "mkl.h" nogil:
     lapack_int LAPACKE_cheevd (int matrix_order, char jobz, char uplo, lapack_int n, lapack_complex_float* a, lapack_int lda, float* w)
     lapack_int LAPACKE_zheevd (int matrix_order, char jobz, char uplo, lapack_int n, lapack_complex_double* a, lapack_int lda, double* w)
     ##TODO: get rid of the complex type unmatch warning
+    lapack_int LAPACKE_cheevr(int matrix_layout, char jobz, char range, char uplo, lapack_int n, lapack_complex_float* a, lapack_int lda,
+                              float vl, float vu, lapack_int il, lapack_int iu, float abstol, lapack_int* m, float* w, lapack_complex_float* z, lapack_int ldz, lapack_int* isuppz)
+
+    lapack_int LAPACKE_zheevr(int matrix_layout, char jobz, char range, char uplo, lapack_int n, lapack_complex_double* a, lapack_int lda,
+                              double vl, double vu, lapack_int il, lapack_int iu, double abstol, lapack_int* m, double* w, lapack_complex_double* z, lapack_int ldz, lapack_int* isuppz)
+
 
 
     cdef int LAPACK_ROW_MAJOR=101
