@@ -18,10 +18,11 @@ from numkl import __author__, __version__
 try:
     mklroot = os.environ["MKLROOT"]
 except KeyError:
-    pass
+    mklroot = ""
 
-# os.environ["CC"] = "icc"
-# os.environ["LDSHARED"] = "icc -shared"
+if mklroot: ## local build: using icc instead
+    os.environ["CC"] = "icc"
+    os.environ["LDSHARED"] = "icc -shared"
 ## try use intel compiler as introduced in https://software.intel.com/en-us/articles/thread-parallelism-in-cython
 
 mkl_info = get_info("mkl")
@@ -98,4 +99,4 @@ setup(
 )
 
 ## wheel upload is not supported, see https://stackoverflow.com/questions/50690526/how-to-publish-binary-python-wheels-for-linux-on-a-local-machine
-## also, it doesn't make sense to share the wheel at the beginning, due to the external mkl so library
+## also, it doesn't make too much sense to share the wheel at the beginning, due to the external mkl so library

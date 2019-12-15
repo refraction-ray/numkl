@@ -1,9 +1,10 @@
-# cython: language_level=3
+#cython: language_level=3
 
-import cython
-import numpy as np
 from numkl.lapackev cimport *
 from numkl.helper import errmsg, _info_error
+import cython
+import numpy as np
+
 
 
 @cython.boundscheck(False) ##TODO: change spevd to fused type

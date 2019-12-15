@@ -21,11 +21,13 @@ Note this package is in its very early age, no guarantee on successful installat
 ## Example
 
 ```python
+from numkl import eig # must import numkl before numpy!!
 import numpy as np
-from numkl import eig
 a = np.array([[0.,1.0],[1.0,0.]])
 e,v = eig.eighx(a)
 ```
+
+The only thing requiring special attention is that one should in general import numkl before numpy. Such that we could successfully link to the ilp64 lib instead of lp64, which is 32bit int interface of MKL and the default one linked by numpy.
 
 ## Why
 
